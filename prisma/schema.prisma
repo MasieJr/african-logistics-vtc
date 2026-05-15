@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+enum Role {
+  DRIVER
+  DISPATCHER
+  ADMIN
+}
+
+enum JobStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  name          String
+  password      String   // Hashed security credential
+  role          Role     @default(DRIVER)
+  driverNumber  String?  @unique // Custom business identifier, e.g., ALV-001
+  joinedAt      DateTime @default(now())
+  jobs          Job[]
+}
+
+model Job {
+  id              String    @id @default(uuid())
+  driverId        String
+  driver          User      @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  departureCity   String
+  arrivalCity     String
+  cargo           String
+  distanceKm      Int
+  fuelUsedLiters  Float
+  income          Float
+  screenshotUrl   String    // Proof-of-delivery asset link
+  status          JobStatus @default(PENDING)
+  createdAt       DateTime  @default(now())
+}
