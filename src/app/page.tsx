@@ -1,25 +1,28 @@
 import React from "react";
-import Navbar from "@/components/common/Navbar";
-import Hero from "@/components/landing/Hero";
-import Stats from "@/components/landing/Stats";
+import Navbar from "@/components/Navbar";
+import Stats from "@/components/Stats";
+import Hero from "@/components/Hero";
+import About from "@/components/About";
+import Events from "@/components/Events";
+import Staff from "@/components/Staff";
+import Partners from "@/components/Partners";
+import Gallery from "@/components/Gallery";
+import Footer from "@/components/Footer";
+import Recruit from "@/components/Recruit";
 
-export default function Home() {
+export default async function Home() {
   return (
-    <div className="min-h-screen bg-logistics-dark selection:bg-logistics-gold selection:text-black">
-      {/* Navigation */}
+    <div className="min-h-screen bg-logistics-dark text-white selection:bg-logistics-gold selection:text-black">
       <Navbar />
-
-      {/* Main Content Layout */}
-      <main>
-        <Hero />
-        <Stats />
-      </main>
-
-      {/* Basic Footer placeholder */}
-      <footer className="w-full py-8 text-center text-xs text-logistics-gray-text border-t border-white/5 mt-12 bg-logistics-steel/20">
-        &copy; {new Date().getFullYear()} African Logistics VTC. All virtual
-        rights reserved.
-      </footer>
+      <Hero />
+      <Stats />
+      <About />
+      <Events />
+      <Staff />
+      <Partners />
+      <Gallery />
+      <Recruit />
+      <Footer />
     </div>
   );
 }

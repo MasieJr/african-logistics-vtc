@@ -5,9 +5,14 @@
   --color-logistics-dark: #121214;       /* Rich, deep charcoal background */
   --color-logistics-steel: #22252A;      /* Component & card backgrounds */
   --color-logistics-gold: #E5A93C;       /* Safari/Ochre gold for highlights */
-  --color-logistics-orange: #E65F2B;     /* High-visibility sunset orange for CTAs */
+  --color-logistics-orange: #FF5500;     /* High-visibility sunset orange for CTAs */
   --color-logistics-gray-text: #96A0B0;  /* Clean secondary text */
   --color-logistics-light-bg: #F4F5F7;   /* Fallback light mode background */
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; 
 }
 
 :root {
@@ -21,7 +26,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Custom scrollbar to keep the driver hub looking sleek */
 ::-webkit-scrollbar {
   width: 8px;
 }
