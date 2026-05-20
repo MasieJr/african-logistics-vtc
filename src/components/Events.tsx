@@ -1,6 +1,7 @@
 import { getUpcomingVtcEvents } from "@/lib/truckersmp";
 import Image from "next/image";
-const VTC_ID = "49511-africanlogistics";
+import { Gamepad2, Server, Truck, UsersRound } from "lucide-react";
+import EventIcons from "./EventIcons";
 
 export default async function Events() {
   const liveEvents = await getUpcomingVtcEvents();
@@ -11,13 +12,11 @@ export default async function Events() {
     >
       <div className="max-w-6xl mx-auto space-y-10">
         <div className="text-center space-y-2">
-          <span className="text-xs font-black uppercase tracking-widest text-logistics-orange">
-            Live Network Calendar
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">
-            Upcoming Convoys
+          <div className="w-[20%] h-[3px] bg-logistics-orange mx-auto rounded" />
+          <h2 className="text-4xl sm:text-4xl font-black uppercase tracking-tight text-logistics-orange">
+            Our Schedule
           </h2>
-          <div className="w-12 h-[3px] bg-logistics-orange mx-auto rounded" />
+          <div className="w-[20%] h-[3px] bg-logistics-orange mx-auto rounded" />
         </div>
 
         {liveEvents.length === 0 ? (
@@ -31,13 +30,16 @@ export default async function Events() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {liveEvents.map((event) => (
               <div
                 key={event.id}
                 className="bg-logistics-steel border border-white/5 rounded-2xl px-6 flex flex-col justify-between gap-6 shadow-xl hover:border-white/10 transition-colors group"
               >
                 <div>
+                  <h3 className=" min-h-15 text-lg font-black mt-4 text-logistics-orange font-mono leading-snug group-hover:text-logistics-gold transition-colors">
+                    {event.title}
+                  </h3>
                   <div className="relative w-full h-24 bg-logistics-dark">
                     <Image
                       src={event.bannerUrl}
@@ -46,13 +48,11 @@ export default async function Events() {
                       className="object-cover opacity-60 group-hover:opacity-75 transition-opacity"
                       unoptimized
                     />
-                    <h3 className="absolute top-1 left-3 text-lg font-black mt-4 text-logistics-orange font-mono leading-snug group-hover:text-logistics-gold transition-colors">
-                      {event.title}
-                    </h3>
+
                     <div className="absolute inset-0 bg-gradient-to-t from-logistics-steel via-transparent to-transparent" />
                   </div>
 
-                  <div className="mt-4 space-y-1.5 text-xs text-logistics-gray-text">
+                  <div className="flex flex-row justify-between mt-4 space-y-1.5 text-xs text-logistics-gray-text">
                     <div className="flex items-center gap-2">
                       <span className="text-logistics-orange font-bold font-mono">
                         DEPART:
@@ -70,9 +70,21 @@ export default async function Events() {
                       </span>
                     </div>
                   </div>
+                  <div className="flex flex-row justify-between text-xs">
+                    <EventIcons icon={Gamepad2} label={event.game} />
+                    <EventIcons icon={Server} label={event.server} />
+                    <EventIcons
+                      icon={UsersRound}
+                      label={String(event.attending)}
+                    />
+                    <EventIcons
+                      icon={Truck}
+                      label={String(event.vtcAttending)}
+                    />
+                  </div>
                 </div>
 
-                <div className="border-t border-white/5 pt-4 flex flex-col sm:flex-row justify-between sm:items-center gap-4 text-xs">
+                <div className="border-t border-white/5 pt-4 flex flex-col sm:flex-row justify-between sm:items-center gap-4 text-xs mb-3">
                   <div className="font-mono text-logistics-gray-text">
                     📅{" "}
                     <span className="text-white font-semibold">
@@ -87,9 +99,9 @@ export default async function Events() {
                     href={event.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-center font-mono text-[11px] font-bold uppercase tracking-wider bg-white/5 hover:bg-logistics-orange text-white hover:text-white px-3.5 py-2 rounded-lg transition-all"
+                    className="text-center font-mono text-[10px] font-bold uppercase tracking-wider bg-white/5 hover:bg-logistics-orange text-white hover:text-white px-3.5 py-2 rounded-lg transition-all"
                   >
-                    Sign Up ➔
+                    Attend
                   </a>
                 </div>
               </div>

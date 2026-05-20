@@ -11,13 +11,11 @@ export default async function Partners() {
     >
       <div className="max-w-6xl mx-auto space-y-10">
         <div className="text-center space-y-2">
-          <span className="text-xs font-black uppercase tracking-widest text-logistics-orange">
-            Official Alliances
-          </span>
-          <h2 className="text-3xl font-black uppercase tracking-tight text-white font-mono">
+          <div className="w-[20%] h-[3px] bg-logistics-orange mx-auto rounded" />
+          <h2 className="text-4xl font-black uppercase tracking-tight text-logistics-orange">
             Our Partners
           </h2>
-          <div className="w-12 h-[3px] bg-logistics-orange mx-auto rounded" />
+          <div className="w-[20%] h-[3px] bg-logistics-orange mx-auto rounded" />
         </div>
 
         {partners.length === 0 ? (

@@ -20,7 +20,7 @@ export interface TMPEvent {
   title: string;
   game: string;
   bannerUrl: string;
-  mapUrl: String;
+  mapUrl: string;
   departure: string;
   arrival: string;
   date: string;
@@ -241,7 +241,7 @@ export async function getUpcomingVtcEvents(): Promise<TMPEvent[]> {
 
     return Array.from(uniqueEventsMap.values())
       .sort((a, b) => a.timestamp - b.timestamp)
-      .slice(0, 4);
+      .slice(0, 9);
   } catch (error) {
     console.error(
       "Failed to compile aggregated TruckersMP events timeline:",

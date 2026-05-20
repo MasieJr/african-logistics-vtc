@@ -3,6 +3,10 @@ import { getVtcStaff } from "@/lib/truckersmp";
 
 export default async function Staff() {
   const liveStaff = await getVtcStaff();
+
+  const owner = liveStaff.filter((staff) => {
+    staff.role === "OWNER";
+  });
   return (
     <section
       id="team"
@@ -10,13 +14,11 @@ export default async function Staff() {
     >
       <div className="max-w-6xl mx-auto space-y-12">
         <div className="text-center space-y-2">
-          <span className="text-xs font-black uppercase tracking-widest text-logistics-gold">
-            Fleet Command Hub
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-white">
+          <div className="w-[20%] h-[3px] bg-logistics-gold mx-auto rounded" />
+          <h2 className="text-4xl font-black uppercase tracking-tight text-logistics-gold">
             Meet The Team
           </h2>
-          <div className="w-12 h-[3px] bg-logistics-gold mx-auto rounded" />
+          <div className="w-[20%] h-[3px] bg-logistics-gold mx-auto rounded" />
         </div>
 
         {liveStaff.length === 0 ? (
