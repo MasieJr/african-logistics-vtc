@@ -50,7 +50,7 @@ export default function Navbar() {
 
         <div className="flex items-center">
           <Link
-            href="/login"
+            href="#"
             className="bg-logistics-orange hover:bg-logistics-orange/90 text-white font-bold text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all shadow-md shadow-logistics-orange/10"
           >
             Driver Portal

@@ -18,12 +18,20 @@ export interface TMPStaffMember {
 export interface TMPEvent {
   id: number;
   title: string;
+  game: string;
+  bannerUrl: string;
+  mapUrl: String;
   departure: string;
   arrival: string;
   date: string;
   time: string;
   server: string;
   url: string;
+  attending: number;
+  unsure: number;
+  vtcAttending: number;
+  timestamp: number;
+  isAttendingOnly: boolean;
 }
 
 export interface TMPPartnerVTC {
@@ -174,47 +182,71 @@ export async function getVtcStaff(): Promise<TMPStaffMember[]> {
 
 export async function getUpcomingVtcEvents(): Promise<TMPEvent[]> {
   try {
-    const res = await fetch(
-      `https://api.truckersmp.com/v2/vtc/${VTC_ID}/events`,
-      {
+    const [hostedRes, attendingRes] = await Promise.all([
+      fetch(`https://api.truckersmp.com/v2/vtc/${VTC_ID}/events`, {
         next: { revalidate: 1800 },
-      },
-    );
+      }),
+      fetch(`https://api.truckersmp.com/v2/vtc/${VTC_ID}/events/attending`, {
+        next: { revalidate: 1800 },
+      }),
+    ]);
 
-    if (!res.ok)
-      throw new Error(
-        "TruckersMP Events endpoint returned an operational error",
-      );
-    const data = await res.json();
+    const hostedData = hostedRes.ok ? await hostedRes.json() : { response: [] };
+    const attendingData = attendingRes.ok
+      ? await attendingRes.json()
+      : { response: [] };
 
-    const rawEvents = data.response || [];
+    const rawHosted = hostedData.response || [];
+    const rawAttending = attendingData.response || [];
 
-    return rawEvents
-      .map((event: any) => {
-        const eventDate = new Date(event.start_at);
+    const now = Date.now();
+    const uniqueEventsMap = new Map<number, TMPEvent>();
 
-        return {
-          id: event.id,
-          title: event.name,
-          departure: event.departure?.city || "Custom Location",
-          arrival: event.arrive?.city || "Custom Location",
-          date: eventDate.toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          }),
-          time: eventDate.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            timeZoneName: "short",
-          }),
-          server: event.server?.name || "Simulation Server",
-          url: `https://truckersmp.com/events/${event.id}`,
-        };
-      })
+    const parseAndMapEvent = (event: any, isAttendingOnly: boolean) => {
+      if (!event || !event.id) return;
+
+      const eventTimestamp = new Date(event.start_at).getTime();
+      if (eventTimestamp < now) return;
+
+      uniqueEventsMap.set(event.id, {
+        id: event.id,
+        title: event.name,
+        departure: event.departure?.city || "Custom Location",
+        arrival: event.arrive?.city || "Custom Location",
+        date: new Date(event.start_at).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+        time: new Date(event.start_at).toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          timeZoneName: "short",
+        }),
+        server: event.server?.name || "Simulation Server",
+        url: `https://truckersmp.com/events/${event.id}`,
+        timestamp: eventTimestamp,
+        isAttendingOnly,
+        game: event.game,
+        bannerUrl: event.banner,
+        mapUrl: event.map,
+        attending: event.attendances?.confirmed,
+        unsure: event.attendances?.unsure,
+        vtcAttending: event.attendances?.vtcs,
+      });
+    };
+
+    rawAttending.forEach((item: any) => parseAndMapEvent(item, true));
+    rawHosted.forEach((item: any) => parseAndMapEvent(item, false));
+
+    return Array.from(uniqueEventsMap.values())
+      .sort((a, b) => a.timestamp - b.timestamp)
       .slice(0, 4);
   } catch (error) {
-    console.error("Failed to parse TruckersMP global events map:", error);
+    console.error(
+      "Failed to compile aggregated TruckersMP events timeline:",
+      error,
+    );
     return [];
   }
 }

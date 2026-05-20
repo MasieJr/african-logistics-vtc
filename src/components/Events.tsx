@@ -1,4 +1,5 @@
 import { getUpcomingVtcEvents } from "@/lib/truckersmp";
+import Image from "next/image";
 const VTC_ID = "49511-africanlogistics";
 
 export default async function Events() {
@@ -34,18 +35,22 @@ export default async function Events() {
             {liveEvents.map((event) => (
               <div
                 key={event.id}
-                className="bg-logistics-steel border border-white/5 rounded-2xl p-6 flex flex-col justify-between gap-6 shadow-xl hover:border-white/10 transition-colors group"
+                className="bg-logistics-steel border border-white/5 rounded-2xl px-6 flex flex-col justify-between gap-6 shadow-xl hover:border-white/10 transition-colors group"
               >
                 <div>
-                  <div className="flex justify-between items-start gap-4">
-                    <span className="text-[10px] font-mono bg-logistics-gold/10 text-logistics-gold border border-logistics-gold/20 px-2.5 py-0.5 rounded font-bold uppercase tracking-wider">
-                      TruckersMP API Sync
-                    </span>
+                  <div className="relative w-full h-24 bg-logistics-dark">
+                    <Image
+                      src={event.bannerUrl}
+                      alt=""
+                      fill
+                      className="object-cover opacity-60 group-hover:opacity-75 transition-opacity"
+                      unoptimized
+                    />
+                    <h3 className="absolute top-1 left-3 text-lg font-black mt-4 text-logistics-orange font-mono leading-snug group-hover:text-logistics-gold transition-colors">
+                      {event.title}
+                    </h3>
+                    <div className="absolute inset-0 bg-gradient-to-t from-logistics-steel via-transparent to-transparent" />
                   </div>
-
-                  <h3 className="text-lg font-black mt-4 text-white font-mono leading-snug group-hover:text-logistics-gold transition-colors">
-                    {event.title}
-                  </h3>
 
                   <div className="mt-4 space-y-1.5 text-xs text-logistics-gray-text">
                     <div className="flex items-center gap-2">
