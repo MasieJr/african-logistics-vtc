@@ -4,7 +4,8 @@ import { getVtcStaff } from "@/lib/truckersmp";
 export default async function Staff() {
   const liveStaff = await getVtcStaff();
 
-  const owner = liveStaff.filter((staff) => {
+  const owner = liveStaff.find((staff) => staff.role === "OWNER");
+  const executives = liveStaff.filter((staff) => {
     staff.role === "OWNER";
   });
   return (
