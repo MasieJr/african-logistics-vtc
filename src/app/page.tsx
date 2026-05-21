@@ -8,7 +8,6 @@ import Staff from "@/components/Staff";
 import Partners from "@/components/Partners";
 import Gallery from "@/components/Gallery";
 import Footer from "@/components/Footer";
-import Recruit from "@/components/Recruit";
 
 export default async function Home() {
   return (
@@ -21,7 +20,7 @@ export default async function Home() {
       <Staff />
       <Partners />
       <Gallery />
-      <Recruit />
+      {/* <Recruit /> */}
       <Footer />
     </div>
   );

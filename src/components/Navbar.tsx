@@ -36,8 +36,8 @@ export default function Navbar() {
           <Link href="#partners" className="hover:text-white transition-colors">
             Our Partners
           </Link>
-          <Link href="#apply" className="hover:text-white transition-colors">
-            Application
+          <Link href="#gallery" className="hover:text-white transition-colors">
+            Gallery
           </Link>
           <Link
             href="https://discord.gg/your-link"
